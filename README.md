@@ -1,6 +1,6 @@
 # The Dissipative Decoder
 
-**Paper 4** — Thermodynamic Cost Bounds on the Serial Decoding Throughput Basin
+**Paper 5** — Thermodynamic Cost Bounds on the Serial Decoding Throughput Basin
 
 **Website:** https://windstorminstitute.org
 
