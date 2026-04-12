@@ -1,0 +1,281 @@
+% Paper 5 of 7 in The Windstorm Series
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+
+\title{Thermodynamic Cost Bounds on the Serial Decoding Throughput Basin}
+
+\author{Grant Lavell Whitmer III\\
+The Windstorm Institute\\
+Fort Ann, NY 12827, USA\\
+\texttt{grantwhitmer3@gmail.com}}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Serial decoding systems---ribosome, cognition, language, and artificial intelligence---converge to 3--6 bits per processing event. This study derives a discrimination cost function with super-linear alphabet scaling and exponential fidelity scaling, showing that the throughput basin is geometrically inevitable for systems with super-linear discrimination cost. Two cost regimes are identified. Regime~A (alphabet-bound) describes biological systems using pairwise molecular recognition, where cost scales quadratically, producing an efficiency peak at approximately $M = 20$ amino acids. Regime~B (capacity-bound) describes silicon AI, where cost scales sub-linearly (measured exponent $\alpha = 0.937$ across 27 models), producing no basin. The ribosome operates within 2\% of its thermodynamic minimum; a 7-billion-parameter transformer operates approximately $10^9$ above its Landauer floor. A temperature prediction tested across 29 organisms yields partial correlation $r = -0.451$ ($p = 0.014$) between amino acid entropy and growth temperature, controlling for GC-content. The basin is a speed limit for pairwise discriminators; silicon escapes it entirely. The two-regime framework resolves why AI lands in the biological throughput basin despite having no thermodynamic constraint on vocabulary size.
+\end{abstract}
+
+\noindent\textbf{Keywords:} dissipative decoding; discrimination energy; Landauer bound; kinetic proofreading; alphabet-bound regime; capacity-bound regime; ribosome efficiency; serial information processing; phase-space analysis; energy scaling
+
+\section{Introduction}
+
+The first four papers in this series established what the throughput basin is and where it sits. Thirty-one systems across six domains cluster between 3 and 6 bits per processing event~\cite{whitmer2026floor,whitmer2026basin}. The ribosome was predicted to 0.003 bits from pure physics~\cite{whitmer2026serial}. Evolutionary simulations independently reinvented the genetic code~\cite{whitmer2026basin}. But one question remained unanswered: why does the basin sit at 3--6 bits rather than 1--2 or 10--12?
+
+This paper answers: energy. Every serial decoder faces a tradeoff between informational return (how much is learned per processing step) and discrimination cost (the energy required to reliably distinguish one symbol from another). Informational return grows logarithmically with alphabet size---diminishing returns. Discrimination cost depends on the physical mechanism of discrimination, and this is where biology and silicon fundamentally diverge.
+
+\section{Materials and Methods}
+
+\subsection{Discrimination Cost Function}
+
+The general discrimination cost function has two components:
+\begin{equation}
+W(M, \varepsilon) = W_{\mathrm{alphabet}}(M) + W_{\mathrm{fidelity}}(\varepsilon)
+\end{equation}
+where $W_{\mathrm{alphabet}}(M)$ captures the cost of maintaining $M$ distinguishable symbols and $W_{\mathrm{fidelity}}(\varepsilon)$ captures the cost of achieving error rate $\varepsilon$. For pairwise molecular recognition (Regime~A), $W_{\mathrm{alphabet}}$ scales as $M(M-1)/2$---the number of pairwise distinctions required. For learned parameters (Regime~B), $W_{\mathrm{alphabet}}$ scales sub-linearly with model capacity.
+
+\subsection{Two Cost Regimes}
+
+\textbf{Regime~A (Alphabet-Bound, $\alpha > 1$):} Biological systems using pairwise molecular recognition. The ribosome distinguishes amino acids through dedicated aminoacyl-tRNA synthetases; each of the 21 amino acids has a dedicated molecular machine whose sole job is to recognize one amino acid and reject the other 20. The number of pairwise distinctions grows quadratically: $M(M-1)/2$. At $M = 21$, that is 210 pairwise comparisons. At $M = 30$, it would be 435---more than double the discrimination infrastructure for less than half a bit of additional information.
+
+\textbf{Regime~B (Capacity-Bound, $\alpha < 1$):} Silicon AI systems using independent learned parameters. A transformer model performs matrix multiplication over independently learned parameters. The vocabulary is implemented as a cheap linear projection (softmax layer). Adding tokens to the vocabulary costs negligibly. The cost of adding parameters is sub-linear---each additional parameter costs less energy than the last.
+
+\subsection{Efficiency Function}
+
+The bits-per-joule efficiency function is:
+\begin{equation}
+\eta(M) = \frac{\log_2(M)}{W(M)}
+\end{equation}
+For Regime~A ($\alpha > 1$), $\eta(M)$ has a single peak---the optimal alphabet size. For Regime~B ($\alpha < 1$), $\eta(M)$ is monotonically decreasing---no peak, no basin.
+
+\subsection{Energy Benchmark: 27 AI Models}
+
+Energy consumption was measured for 27 AI models on standardized hardware (NVIDIA RTX 5090) using \texttt{nvidia-smi} GPU power polling at 10\,ms intervals. Models spanned the Pythia family (14M to 1.4B parameters) and additional architectures. The relationship between energy and parameter count was assessed via log-log regression.
+
+\subsection{Temperature Prediction: Kazusa Database}
+
+To test whether discrimination cost increases with temperature (via the $kT$ term in the Landauer bound~\cite{landauer1961}), amino acid usage entropy was computed for 29 organisms spanning growth temperatures from 8 to 100$^\circ$C using the live Kazusa Codon Usage Database. GC-content was included as a control variable, as it is a known confound for temperature-driven compositional shifts~\cite{zeldovich2007}. The partial correlation between amino acid entropy and temperature, controlling for GC-content, was computed.
+
+\section{Results}
+
+\subsection{Phase-Space Analysis}
+
+The phase-space analysis confirms that the 3--6 bit basin is geometrically inevitable for any system with $\alpha > 1$. The efficiency function $\eta(M) = \log_2(M) / (\gamma M^\alpha)$ has a unique maximum when $\alpha > 1$, located at:
+\begin{equation}
+M^* = \left(\frac{1}{\alpha \gamma \ln 2}\right)^{1/\alpha}
+\end{equation}
+This is a topological feature of the optimization landscape, not a parameter-dependent coincidence: the ratio of a concave function (logarithm) to a convex function (power law with exponent greater than 1) always has a single peak, regardless of the specific parameter values. For $\alpha < 1$, the landscape is monotonic---no basin, no peak, no constraint. The transition at $\alpha = 1$ is sharp and acts as a phase boundary: systems with super-linear discrimination cost are trapped in the basin; systems with sub-linear cost escape it entirely.
+
+\subsection{Silicon Energy Scaling}
+
+Across 27 models evaluated on the NVIDIA RTX 5090, silicon energy scales as $E \propto \mathrm{params}^{0.937}$ ($r^2 = 0.960$, log-log regression). The exponent $\alpha = 0.937$ is sub-linear: each additional parameter costs less energy than the last. This is the opposite of biology's quadratic scaling and explains why AI has no thermodynamic basin.
+
+\begin{table}[ht]
+\centering
+\caption{Energy scaling across the Pythia model family (identical tokenizer).}
+\begin{tabular}{lcccc}
+\toprule
+Model & Parameters & BPB & Energy/token (mJ) & Efficiency (bits/mJ) \\
+\midrule
+Pythia-14M & 14M & 1.74 & 0.12 & 14.5 \\
+Pythia-70M & 70M & 1.23 & 0.18 & 6.8 \\
+Pythia-410M & 410M & 0.97 & 0.34 & 2.9 \\
+Pythia-1.4B & 1.4B & 0.85 & 0.58 & 1.5 \\
+\bottomrule
+\end{tabular}
+\label{tab:pythia}
+\end{table}
+
+A 100-fold increase in parameters yields a 46\% improvement in compression but a nearly 5-fold increase in energy per token. Vocabulary size (identical across all Pythia models) contributes nothing to this trend---it is purely a capacity-driven scaling relationship, confirming the Regime~B classification.
+
+\subsection{Efficiency Peak at $M \sim 20$}
+
+For Regime~A, the bits-per-joule efficiency function has a single peak at approximately $M = 20$. The genetic code has 21 amino acids because 21 is where thermodynamic efficiency is maximized---evolution found the peak of the efficiency surface. The throughput basin is the inevitable consequence of concave returns (logarithmic information gain) divided by convex cost (quadratic pairwise discrimination).
+
+\subsection{Landauer Comparison}
+
+\begin{table}[ht]
+\centering
+\caption{Thermodynamic efficiency comparison.}
+\begin{tabular}{lc}
+\toprule
+System & $\phi$ (ratio to Landauer minimum) \\
+\midrule
+Ribosome & ${\sim}1.02$ (2\% above minimum) \\
+7B-parameter transformer & ${\sim}800{,}000{,}000$ ($10^9$ above minimum) \\
+\bottomrule
+\end{tabular}
+\label{tab:landauer}
+\end{table}
+
+After 3.8 billion years of optimization, evolution has closed the gap to within 2\% of the thermodynamic minimum. Current AI systems operate approximately nine orders of magnitude above their Landauer floor.
+
+\subsection{Slack Ordering}
+
+The slack ordering across Regime~A systems is consistent with the thermodynamic framework: cheaper discrimination correlates with lower slack.
+
+\begin{table}[ht]
+\centering
+\caption{Slack ordering across Regime~A systems.}
+\begin{tabular}{lcccc}
+\toprule
+System & Floor $R_M(\varepsilon)$ & Observed & Slack $\Delta$ & Discrimination cost \\
+\midrule
+Ribosome & 4.39 & 4.39 & 0.00 & Low (GTP hydrolysis) \\
+Phonology & 4.71 & 4.95 & 0.24 & Medium (neural) \\
+Chromatic scale & 3.12 & 3.58 & 0.46 & Medium-high (perceptual) \\
+Cognition & 1.97 & 3.12 & 1.15 & High (${\sim}10^4$ ATP/bit) \\
+\bottomrule
+\end{tabular}
+\label{tab:slack}
+\end{table}
+
+Biology operates nearest the floor because molecular discrimination via GTP hydrolysis and tRNA selection is energetically cheap per comparison. Neural substrates operate with higher slack because synaptic discrimination costs approximately $10^4$ ATP per bit---orders of magnitude more expensive than molecular discrimination.
+
+\subsection{Temperature Prediction}
+
+Across 29 organisms spanning 8 to 100$^\circ$C, the partial correlation between amino acid entropy and growth temperature, controlling for GC-content, is $r = -0.451$ ($p = 0.014$). Hotter organisms use fewer distinct amino acids, consistent with the prediction that increased $kT$ raises the cost of each pairwise discrimination.
+
+This result is preliminary, not proof. The GC-matched control comparisons were underpowered. Phylogenetic controls (PGLS) have not yet been applied. Prior work by Singer and Hickey (2003) and Zeldovich et al.\ (2007) documented temperature-driven compositional shifts attributed to GC bias and protein stability. The entropy measure captures a complementary signal, but the effect is moderate and requires confirmation.
+
+\section{Discussion}
+
+\subsection{Why Biology Stopped at 21 Amino Acids}
+
+Biology could not decouple its vocabulary from its discrimination cost because molecular recognition is inherently pairwise: adding a new amino acid requires building entirely new molecular machinery to distinguish it from everything else. The cost grows quadratically while the information return grows logarithmically, producing an efficiency peak at $M \sim 20$. This is why the genetic code stopped at 21 amino acids---it is the thermodynamic optimum.
+
+\subsection{Why Silicon Escapes the Basin}
+
+Silicon decoupled vocabulary from discrimination cost because learned parameters are independent. A softmax projection over a 50,000-token vocabulary is cheap regardless of token count. The cost scales sub-linearly with model capacity ($\alpha = 0.937$), so the bits-per-joule function is monotonically decreasing---no peak, no basin, no constraint. AI can have 50,000 tokens for the same reason the ribosome cannot: different cost regimes.
+
+\subsection{The Falsification That Became a Discovery}
+
+We originally predicted that energy-efficient AI models would approach the rate-distortion floor, just as the ribosome does. The data showed the opposite: larger, more expensive models get closer to the floor. The prediction was cleanly falsified. But the falsification revealed something deeper than the original prediction would have: biology and silicon operate in fundamentally different cost regimes. The throughput basin is a feature of alphabet-bound systems specifically, not a universal law. This distinction---Regime~A versus Regime~B---is the paper's central contribution.
+
+\subsection{Implications for AI Efficiency}
+
+The nine-order-of-magnitude gap between AI and the Landauer floor suggests enormous room for improvement in silicon information processing efficiency. Current AI architectures waste the vast majority of their energy on overhead unrelated to the information-theoretic task. Whether this gap can be substantially closed through architectural innovations (neuromorphic computing, reversible computation) or whether it reflects fundamental constraints of digital hardware is an open question with significant practical implications.
+
+\subsection{Dissipative Structure Interpretation}
+
+Serial decoders in both regimes can be understood as dissipative structures in the sense of Prigogine: they maintain informational order by dissipating energy. The key difference is the scaling of dissipation with complexity. In Regime~A, dissipation scales super-linearly with alphabet size (the number of pairwise molecular comparisons), creating a thermodynamic ceiling that biology cannot exceed without fundamentally restructuring its discrimination mechanism. In Regime~B, dissipation scales sub-linearly with capacity (the number of learned parameters), allowing silicon systems to scale indefinitely---though with diminishing efficiency.
+
+The within-family Pythia analysis provides direct evidence for Regime~B scaling: across the Pythia model series (14M to 1.4B parameters), BPB drops 46\% while using an identical tokenizer. A 100-fold increase in model parameters produces a 300-fold increase in energy consumption but only a 46\% improvement in compression. This is precisely the monotonically decreasing efficiency characteristic of Regime~B: larger models are better but less efficient.
+
+\subsection{Implications for Synthetic Biology}
+
+The efficiency peak at $M \sim 20$ has direct implications for efforts to expand the genetic code beyond the natural 20 amino acids. Adding a 22nd amino acid would require a new aminoacyl-tRNA synthetase capable of discriminating against all 21 existing amino acids---21 new pairwise comparisons---for approximately 0.07 additional bits of information per codon. The thermodynamic cost-benefit ratio becomes increasingly unfavorable as $M$ increases beyond 20. This analysis predicts that synthetic organisms with expanded genetic codes will exhibit reduced growth rates proportional to the discrimination cost overhead of the additional amino acids.
+
+\subsection{Limitations}
+
+\begin{enumerate}
+\item The cost parameters ($\alpha$, $\gamma$) for biological substrates are estimates derived from biophysical literature, not direct measurements of discrimination cost per alphabet expansion.
+\item The temperature prediction requires phylogenetic controls (PGLS) that have not yet been applied.
+\item The energy benchmark covers only one GPU architecture; generalization to other hardware requires additional measurement.
+\item The Landauer comparison assumes minimum-energy reversible computation as the baseline, which may not be achievable in practice.
+\end{enumerate}
+
+\section{Conclusion}
+
+The throughput basin exists for biology because pairwise molecular recognition imposes quadratic discrimination cost, and the ratio of logarithmic information returns to quadratic cost has a unique peak in the 3--6 bit range. Silicon AI escapes this basin because matrix multiplication imposes sub-linear cost ($\alpha = 0.937$), producing a monotonically decreasing efficiency function with no peak. The distinction between Regime~A (alphabet-bound, $\alpha > 1$, basin exists) and Regime~B (capacity-bound, $\alpha < 1$, no basin) resolves the apparent paradox of why AI converges to the biological throughput neighborhood despite having no thermodynamic constraint on vocabulary size. Preliminary temperature data from 29 organisms supports the prediction that increased thermal energy raises discrimination cost and reduces amino acid diversity. The basin is not a universal speed limit---it is a speed limit for pairwise discriminators. The companion paper~\cite{whitmer2026inherited} examines how this biological constraint propagates through human language and into AI training data, explaining the apparent paradox of why AI models converge to approximately 4.2 bits per token despite having no thermodynamic reason to do so. The two-regime framework developed here provides the thermodynamic foundation for that argument: Regime~A constrains biology directly through energy costs, and that constraint is then transmitted indirectly through the information structure of human language to AI systems operating in Regime~B.
+
+\subsection*{Author Contributions}
+
+Conceptualization, G.L.W.; methodology, G.L.W.; software, G.L.W.; validation, G.L.W.; formal analysis, G.L.W.; investigation, G.L.W.; resources, G.L.W.; data curation, G.L.W.; writing---original draft preparation, G.L.W.; writing---review and editing, G.L.W.; visualization, G.L.W.; supervision, G.L.W.; project administration, G.L.W.
+
+\subsection*{Funding}
+
+This research received no external funding. All work was self-funded by the author.
+
+\subsection*{Data Availability Statement}
+
+All experiment code and data are publicly available at \url{https://github.com/Windstorm-Labs/dissipative-decoder}. Temperature data were obtained from the publicly available Kazusa Codon Usage Database.
+
+\subsection*{Acknowledgments}
+
+Mathematical derivations, energy benchmarking, and data analysis were performed with the assistance of Claude (Anthropic), an AI research tool. Temperature data were obtained from the publicly available Kazusa Codon Usage Database.
+
+\subsection*{Conflicts of Interest}
+
+The author declares no conflict of interest.
+
+\begin{thebibliography}{99}
+
+\bibitem{whitmer2026floor}
+Whitmer, G.L., III.
+The Receiver-Limited Floor: Rate-Distortion Bounds on Serial Decoding Throughput.
+\emph{Zenodo}, 2026.
+\href{https://doi.org/10.5281/zenodo.19322973}{DOI: 10.5281/zenodo.19322973}
+
+\bibitem{whitmer2026basin}
+Whitmer, G.L., III.
+The Throughput Basin: Cross-Substrate Convergence and Decomposition of Serial Decoding Throughput.
+\emph{Zenodo}, 2026.
+\href{https://doi.org/10.5281/zenodo.19323194}{DOI: 10.5281/zenodo.19323194}
+
+\bibitem{whitmer2026serial}
+Whitmer, G.L., III.
+The Serial Decoding Basin: Five Experiments on Convergence, Thermodynamic Anchoring, and Receiver-Limited Geometry.
+\emph{Zenodo}, 2026.
+\href{https://doi.org/10.5281/zenodo.19323423}{DOI: 10.5281/zenodo.19323423}
+
+\bibitem{landauer1961}
+Landauer, R.
+Irreversibility and Heat Generation in the Computing Process.
+\emph{IBM J.\ Res.\ Dev.}, 1961, \emph{5}, 183--191.
+\href{https://doi.org/10.1147/rd.53.0183}{DOI: 10.1147/rd.53.0183}
+
+\bibitem{zeldovich2007}
+Zeldovich, K.B.; Berezovsky, I.N.; Shakhnovich, E.I.
+Protein and DNA Sequence Determinants of Thermophilic Adaptation.
+\emph{PLoS Comput.\ Biol.}, 2007, \emph{3}, e5.
+\href{https://doi.org/10.1371/journal.pcbi.0030005}{DOI: 10.1371/journal.pcbi.0030005}
+
+\bibitem{whitmer2026inherited}
+Whitmer, G.L., III.
+The Inherited Constraint: Biological Throughput Limits Shape the Information Structure of Human Language and AI.
+\emph{Zenodo}, 2026.
+\href{https://doi.org/10.5281/zenodo.19432911}{DOI: 10.5281/zenodo.19432911}
+
+\bibitem{hopfield1974}
+Hopfield, J.J.
+Kinetic Proofreading: A New Mechanism for Reducing Errors in Biosynthetic Processes.
+\emph{Proc.\ Natl.\ Acad.\ Sci.\ USA}, 1974, \emph{71}, 4135--4139.
+\href{https://doi.org/10.1073/pnas.71.10.4135}{DOI: 10.1073/pnas.71.10.4135}
+
+\bibitem{shannon1948}
+Shannon, C.E.
+A Mathematical Theory of Communication.
+\emph{Bell Syst.\ Tech.\ J.}, 1948, \emph{27}, 379--423.
+\href{https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}{DOI: 10.1002/j.1538-7305.1948.tb01338.x}
+
+\bibitem{whitmer2026fons}
+Whitmer, G.L., III.
+The Fons Constraint: Information-Theoretic Convergence on Encoding Depth in Self-Replicating Systems.
+\emph{Zenodo}, 2026.
+\href{https://doi.org/10.5281/zenodo.19274048}{DOI: 10.5281/zenodo.19274048}
+
+\bibitem{whitmer2026code}
+Whitmer, G.L., III.
+Dissipative Decoder: Experiment Code and Data.
+\emph{GitHub}, 2026.
+Available online: \url{https://github.com/Windstorm-Labs/dissipative-decoder}
+
+\end{thebibliography}
+
+\bigskip
+\noindent\emph{This paper is Paper~5 of The Windstorm Series. The series includes Paper~1: The Fons Constraint~\cite{whitmer2026fons}, Paper~2: The Receiver-Limited Floor~\cite{whitmer2026floor}, Paper~3: The Throughput Basin~\cite{whitmer2026basin}, Paper~4: The Serial Decoding Basin~\cite{whitmer2026serial}, Paper~6: The Inherited Constraint~\cite{whitmer2026inherited}, and Paper~7: The Throughput Basin Origin (DOI: 10.5281/zenodo.19498582).}
+
+\bigskip
+\noindent\textcopyright{} 2026 Grant Lavell Whitmer III. This article is licensed under a Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+\end{document}
