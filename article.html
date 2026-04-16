@@ -288,12 +288,14 @@ nav {
   <div class="article-hero-inner">
     <a href="../index.html#articles" class="article-back">&larr; All Articles</a>
     <div class="article-meta">
+      <span>Paper 5</span>
       <span>April 2026</span>
       <span>~12 min read</span>
       <span>Grant Lavell Whitmer III</span>
+      <span><a href="https://doi.org/10.5281/zenodo.19433048">doi: 10.5281/zenodo.19433048</a></span>
     </div>
     <h1>Why the Basin Exists &mdash; and Why Silicon Escapes It<br><span class="gradient">The Dissipative Decoder: Two Regimes, One Mathematics, and the Speed Limit That Biology Cannot Break</span></h1>
-    <p class="article-subtitle">This article summarizes &ldquo;The Dissipative Decoder: Thermodynamic Cost Bounds on the Serial Decoding Throughput Basin &mdash; and Why Silicon Escapes Them&rdquo; (in preparation, 2026).</p>
+    <p class="article-subtitle">This article summarizes &ldquo;The Dissipative Decoder: Thermodynamic Cost Bounds on the Serial Decoding Throughput Basin &mdash; and Why Silicon Escapes Them&rdquo; (2026).</p>
     <div class="figure" style="margin: 2rem auto;">
       <img src="../assets/images/web_carnot_analogy.png" alt="Carnot analogy diagram">
     </div>
@@ -351,6 +353,11 @@ nav {
 
   <p>A 7-billion-parameter transformer: approximately 800,000,000 times above its Landauer floor. Not 2%. Not 200%. Nearly a billion-fold overhead.</p>
 
+  <div class="callout">
+    <div class="callout-label">A note on the &phi; numbers (added April 2026)</div>
+    <p>The &asymp;10<sup>9</sup> figure quoted here is the <em>useful-dissipation</em> fraction per discrimination event &mdash; the thermodynamically relevant energy attributed to the irreversible logical step itself. Paper 7's RTX 5090 measurements report &phi; &asymp; 10<sup>15</sup>&ndash;10<sup>18</sup> for <em>total GPU wall power</em>, which additionally pays for memory access, cooling, power-supply conversion losses, and idle leakage of the entire board. Both numbers are correct; they measure different physical boundaries. The &asymp;10<sup>9</sup> figure here is the right number for the <em>computational</em> efficiency gap; the &asymp;10<sup>16</sup> figure is the right number for the <em>total system</em> efficiency gap. See <a href="throughput-basin-origin.html">Paper 7</a> &sect;3.4 for the full reconciliation.</p>
+  </div>
+
   <p>This single comparison says more about the difference between biological and artificial information processing than any amount of theory. Evolution is a better optimizer than human engineering &mdash; at least for serial decoding under thermodynamic constraints.</p>
 
   <h2>The Temperature Prediction</h2>
@@ -376,15 +383,14 @@ nav {
   <hr>
 
   <p style="font-size: 0.9rem; color: var(--text-faint); text-align: center; font-style: italic; font-family: var(--serif);">
-    The Dissipative Decoder is in preparation for submission.
+    The Dissipative Decoder is published and available below.
   </p>
 
   <p style="font-size: 0.9rem; color: var(--text-faint); text-align: center; font-family: var(--sans);">
-    All code and data: <a href="https://github.com/sneakyfree/fons-constraint">github.com/sneakyfree/fons-constraint</a>
-  </p>
-
-  <p style="font-size: 0.9rem; color: var(--text-faint); text-align: center; font-family: var(--sans);">
-    Read the full paper: <a href="../assets/documents/Dissipative-Decoder-FINAL.pdf">[PDF]</a>
+    <em>The Dissipative Decoder</em> is Paper 5 of the Windstorm series.<br>
+    Zenodo: <a href="https://doi.org/10.5281/zenodo.19433048">doi.org/10.5281/zenodo.19433048</a> &middot;
+    Code &amp; data: <a href="https://github.com/Windstorm-Institute/dissipative-decoder">github.com/Windstorm-Institute/dissipative-decoder</a><br>
+    <a href="https://doi.org/10.5281/zenodo.19433048">Download the full paper (PDF)</a>
   </p>
 
 </article>
