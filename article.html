@@ -359,7 +359,7 @@ nav {
 
   <p>How far is each system from its theoretical thermodynamic minimum?</p>
 
-  <p>The ribosome: &phi;_useful &asymp; 1.02. It operates within 2% of the minimum energy cost for its discrimination task. After 3.8 billion years of optimization, evolution has closed the gap almost completely.</p>
+  <p>The ribosome: &phi;_info &asymp; 1.02 against its INFORMATIONAL (rate-distortion) floor &mdash; essentially zero wasted bits. Thermodynamically it still dissipates roughly 25&times; the Landauer energy minimum (~80 kT to write ~4.39 bits against a ~3 kT floor). Evolution closed the informational gap almost completely; the energetic gap remains about 25-fold.</p>
 
   <p>A 7-billion-parameter transformer: approximately 800,000,000 times above its Landauer floor. Not 2%. Not 200%. Nearly a billion-fold overhead.</p>
 
@@ -386,7 +386,7 @@ nav {
 
   <p>Biology could not decouple its vocabulary from its discrimination cost because molecular recognition is inherently pairwise &mdash; you cannot add a new amino acid without building new molecular machinery to distinguish it from everything else. Silicon could decouple them because learned parameters are independent &mdash; a softmax projection over a 50,000-token vocabulary is cheap regardless of how many tokens you have.</p>
 
-  <p>This architectural difference is why biology stopped at 21 amino acids and why AI can have 50,000 tokens. It is why the ribosome operates at 98% of its thermodynamic efficiency and why GPT-4 operates at 0.0000001% of its Landauer minimum. And it is why the throughput basin constrains every biological decoder on Earth but not a single GPU.</p>
+  <p>This architectural difference is why biology stopped at 21 amino acids and why AI can have 50,000 tokens. It is why the ribosome sits on its informational floor (zero wasted bits, though still ~25&times; the Landauer energy minimum) and why GPT-4 operates ~10<sup>9</sup>&times; above its Landauer minimum. And it is why the throughput basin constrains every biological decoder on Earth but not a single GPU.</p>
 
   <p>The basin is not a universal speed limit. It is a speed limit for pairwise discriminators. Biology is one. Silicon is not. The mathematics explains both.</p>
 

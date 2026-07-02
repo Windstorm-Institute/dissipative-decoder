@@ -10,7 +10,7 @@ ORCID: 0009-0007-3224-755X
 
 ---
 
-**Abstract:** Serial decoding systems -- ribosome, cognition, language, and artificial intelligence -- converge to 3--6 bits per processing event. This study derives a discrimination cost function with super-linear alphabet scaling and exponential fidelity scaling, showing that the throughput basin is geometrically inevitable for systems with super-linear discrimination cost. Two cost regimes are identified: Regime A (alphabet-bound), where biological pairwise molecular recognition scales quadratically and produces an efficiency peak at approximately M = 20 amino acids, and Regime B (capacity-bound), where silicon AI cost scales sub-linearly (measured exponent alpha = 0.937 across 27 models) and produces no basin. The ribosome operates within 2% of its thermodynamic minimum; a 7-billion-parameter transformer operates approximately 10^9 above its Landauer floor. Temperature data from 29 organisms yield partial correlation r = -0.451 (p = 0.014) between amino acid entropy and growth temperature, controlling for GC-content. The two-regime framework resolves why AI lands in the biological throughput basin despite having no thermodynamic constraint on vocabulary size.
+**Abstract:** Serial decoding systems -- ribosome, cognition, language, and artificial intelligence -- converge to 3--6 bits per processing event. This study derives a discrimination cost function with super-linear alphabet scaling and exponential fidelity scaling, showing that the throughput basin is geometrically inevitable for systems with super-linear discrimination cost. Two cost regimes are identified: Regime A (alphabet-bound), where biological pairwise molecular recognition scales quadratically and produces an efficiency peak at approximately M = 20 amino acids, and Regime B (capacity-bound), where silicon AI cost scales sub-linearly (measured exponent alpha = 0.937 across 27 models) and produces no basin. The ribosome sits essentially on its informational (rate-distortion) floor -- zero slack in bits -- but thermodynamically it dissipates roughly 25x the Landauer minimum (~80 kT to encode ~4.39 bits vs. a ~3 kT floor); a 7-billion-parameter transformer operates approximately 10^9 above its Landauer floor. Temperature data from 29 organisms yield partial correlation r = -0.451 (p = 0.014) between amino acid entropy and growth temperature, controlling for GC-content. The two-regime framework resolves why AI lands in the biological throughput basin despite having no thermodynamic constraint on vocabulary size.
 
 **Keywords:** dissipative decoding; discrimination energy; Landauer bound; kinetic proofreading; ribosome efficiency; serial information processing
 
@@ -85,10 +85,10 @@ For Regime A, the bits-per-joule efficiency function has a single peak at approx
 
 | System | phi (ratio to Landauer minimum) |
 |--------|---------------------------------|
-| Ribosome | ~1.02 (2% above minimum) |
+| Ribosome | ~25 (~25x above Landauer; ~1.02 vs. the informational floor) |
 | 7B-parameter transformer | ~800,000,000 (10^9 above minimum) |
 
-After 3.8 billion years of optimization, evolution has closed the gap to within 2% of the thermodynamic minimum. Current AI systems operate approximately nine orders of magnitude above their Landauer floor.
+After 3.8 billion years of optimization, evolution has closed the informational gap to essentially zero slack, while the ribosome's thermodynamic dissipation remains roughly 25x the Landauer minimum. Current AI systems operate approximately nine orders of magnitude above their Landauer floor.
 
 ### 3.5. Slack Ordering
 
@@ -133,7 +133,7 @@ The nine-order-of-magnitude gap between AI and the Landauer floor suggests enorm
 
 Serial decoders in both regimes can be understood as dissipative structures in the sense of Prigogine: they maintain informational order by dissipating energy. The key difference is the scaling of dissipation with complexity. In Regime A, dissipation scales super-linearly with alphabet size (the number of pairwise molecular comparisons), creating a thermodynamic ceiling that biology cannot exceed without fundamentally restructuring its discrimination mechanism. In Regime B, dissipation scales sub-linearly with capacity (the number of learned parameters), allowing silicon systems to scale indefinitely -- though with diminishing efficiency.
 
-The within-family Pythia analysis provides direct evidence for Regime B scaling: across the Pythia model series (14M to 1.4B parameters), BPB drops 46% while using an identical tokenizer. A 100-fold increase in model parameters produces a 300-fold increase in energy consumption but only a 46% improvement in compression. This is precisely the monotonically decreasing efficiency characteristic of Regime B: larger models are better but less efficient.
+The within-family Pythia analysis provides direct evidence for Regime B scaling: across the Pythia model series (14M to 1.4B parameters), BPB drops 46% while using an identical tokenizer. A 100-fold increase in model parameters produces a nearly 5-fold increase in energy per token (Table 3, 0.12->0.58 mJ) but only a 46% improvement in compression. This is precisely the monotonically decreasing efficiency characteristic of Regime B: larger models are better but less efficient.
 
 ### 4.6. Implications for Synthetic Biology
 
@@ -154,7 +154,7 @@ This work did not require ethical approval.
 
 ## Data Accessibility
 
-All experiment code and data are publicly available at https://github.com/Windstorm-Labs/dissipative-decoder (DOI: 10.5281/zenodo.XXXXXXX). Temperature data were obtained from the publicly available Kazusa Codon Usage Database.
+The companion repository (https://github.com/Windstorm-Labs/dissipative-decoder) currently archives the manuscript only; the energy-benchmarking scripts, the 27-model dataset, and the temperature-analysis code are not yet deposited and will be released in a follow-up archive (DOI to be assigned). The four disclosed Pythia points are reproducible from the table; the headline alpha=0.937 exponent is fit to the full 27-model set, which will be included in the follow-up archive. Temperature data were obtained from the publicly available Kazusa Codon Usage Database.
 
 ## Declaration of AI Use
 
