@@ -23,7 +23,7 @@ Discrimination cost — the energy required to reliably tell one symbol from ano
 
 The ribosome distinguishes amino acids through pairwise molecular recognition. Each of the 21 amino acids has a dedicated aminoacyl-tRNA synthetase — a molecular machine whose sole job is to recognize one amino acid and reject the other 20. Every new amino acid added to the alphabet requires a new synthetase that must be physically distinguished from all existing ones. The number of pairwise distinctions grows as M(M−1)/2: quadratic. At M = 21, that is 210 pairwise comparisons. At M = 30, it would be 435 — more than double the discrimination infrastructure for less than half a bit of additional information.
 
-Plot diminishing returns against accelerating cost and the ratio — bits per joule — has a single peak. That peak sits at M ≈ 20. The genetic code has 21 amino acids because 21 is where thermodynamic efficiency is maximized. The throughput basin is the inevitable consequence of concave returns divided by convex cost.
+The right thing to maximize isn't bits per joule (that ratio degenerately favors a two-symbol alphabet) but the net information kept after paying discrimination cost — bits gained minus cost paid. For biology, discrimination cost grows quadratically and is expensive, so there's a sweet spot: the alphabet size where one more amino acid isn't worth its discrimination overhead. For realistic biological costs that sweet spot sits near M ≈ 20, which is why the genetic code settled near 21 — an optimum for the biological cost scale, not a parameter-free constant.
 
 ## Regime B: How Silicon Discriminates
 
@@ -33,7 +33,7 @@ The vocabulary — those 50,000+ tokens — is implemented as a cheap linear pro
 
 We measured this directly. A 27-model energy benchmark on standardized hardware (RTX 5090) showed that silicon energy scales as params^0.937 — sub-linearly. Each additional parameter costs *less* energy than the last, not more. This is the opposite of biology's quadratic scaling.
 
-The consequence: no peak in bits-per-joule. No optimal vocabulary size. No thermodynamic basin. The smallest model is the most energy-efficient per bit of compression. Efficiency decreases monotonically with scale.
+The consequence: silicon's discrimination is cheap and scales gently, so its sweet spot is a huge vocabulary — far above the 3–6 bit basin, not pinned near 20. (The smallest model is still the most energy-efficient per bit of compression; energy efficiency falls with scale.)
 
 ## The Falsification That Became a Discovery
 
@@ -41,13 +41,13 @@ We originally predicted that energy-efficient AI models would approach the rate-
 
 But the falsification revealed something deeper than the original prediction would have. Biology and silicon operate in fundamentally different cost regimes. Biology is alphabet-bound — its cost scales with the number of symbols it discriminates. Silicon is capacity-bound — its cost scales with the number of parameters it learns. The throughput basin is a feature of alphabet-bound systems specifically, not a universal law.
 
-We named these Regime A (alphabet-bound, α > 1, basin exists) and Regime B (capacity-bound, α < 1, no basin). The phase-space analysis shows the basin is geometrically inevitable for any α > 1 — a topological feature of the optimization landscape, not a parameter-dependent coincidence. For α < 1, the landscape is monotonic. No basin. No peak. No constraint.
+We named these Regime A (alphabet-bound: expensive, steeply scaling discrimination) and Regime B (capacity-bound: cheap, sub-linearly scaling discrimination). Both have an optimal alphabet size — the difference is where it falls. Expensive quadratic cost puts biology's optimum at a small alphabet inside the 3–6 bit basin; cheap sub-linear cost puts silicon's optimum at a large alphabet far above it. There is no sharp α = 1 dividing line; the optimum slides continuously as discrimination gets cheaper.
 
 ## The Landauer Comparison
 
 How far is each system from its theoretical thermodynamic minimum?
 
-The ribosome: φ_useful ≈ 1.02. It operates within 2% of the minimum energy cost for its discrimination task. After 3.8 billion years of optimization, evolution has closed the gap almost completely.
+The ribosome: φ_info ≈ 1.02 against its INFORMATIONAL (rate-distortion) floor — essentially zero wasted bits. Thermodynamically, though, it still burns roughly 25× the Landauer energy minimum (~80 kT to write ~4.39 bits against a ~3 kT floor). Evolution closed the informational gap almost completely; the energetic gap remains about 25-fold.
 
 A 7-billion-parameter transformer: approximately 800,000,000 times above its Landauer floor. Not 2%. Not 200%. Nearly a billion-fold overhead.
 
@@ -65,15 +65,15 @@ We lead with these caveats because honest science demands them. The temperature 
 
 ## What It Means
 
-The Dissipative Decoder answers the "why" question twice. For biology: the basin exists because pairwise molecular recognition imposes quadratic cost, and the ratio of logarithmic returns to quadratic cost has a unique peak in the 3–6 bit range. For silicon: the basin does not exist because matrix multiplication imposes sub-linear cost, and the ratio is monotonically decreasing.
+The Dissipative Decoder answers the "why" question twice. For biology: the optimum sits in the 3–6 bit basin because pairwise molecular recognition imposes expensive quadratic cost, so net return (log returns minus quadratic cost) is maximized at a small alphabet. For silicon: the optimum is a large vocabulary far above the basin because matrix multiplication imposes cheap sub-linear cost, which pushes the net-return optimum to large alphabet sizes.
 
 Biology could not decouple its vocabulary from its discrimination cost because molecular recognition is inherently pairwise — you cannot add a new amino acid without building new molecular machinery to distinguish it from everything else. Silicon could decouple them because learned parameters are independent — a softmax projection over a 50,000-token vocabulary is cheap regardless of how many tokens you have.
 
-This architectural difference is why biology stopped at 21 amino acids and why AI can have 50,000 tokens. It is why the ribosome operates at 98% of its thermodynamic efficiency and why GPT-4 operates at 0.0000001% of its Landauer minimum. And it is why the throughput basin constrains every biological decoder on Earth but not a single GPU.
+This architectural difference is why biology stopped at 21 amino acids and why AI can have 50,000 tokens. It is why the ribosome sits on its informational floor (zero wasted bits, though still ~25× the Landauer energy minimum) and why GPT-4 operates ~10^9× above its Landauer minimum. And it is why the throughput basin constrains every biological decoder on Earth but not a single GPU.
 
 The basin is not a universal speed limit. It is a speed limit for pairwise discriminators. Biology is one. Silicon is not. The mathematics explains both.
 
 ---
 
 *The Dissipative Decoder is in preparation for submission.*
-*All code and data: [github.com/sneakyfree/fons-constraint](https://github.com/sneakyfree/fons-constraint)*
+*Code and data for this paper are being prepared for release at [github.com/Windstorm-Labs/dissipative-decoder](https://github.com/Windstorm-Labs/dissipative-decoder); the current repository archives the manuscript only. (The previous link pointed to the unrelated fons-constraint repo.)*
